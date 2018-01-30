@@ -5,19 +5,19 @@ using System.Security.Cryptography;
 
 using kanban.tool.utils;
 
-namespace kanban.tool.encrypt {
-    public class EncryptTool {
+namespace kanban.tool.decrypt {
+    public class DecryptTool {
         // singleton mode
-        private static EncryptTool tool = null;
-        private EncryptTool() {}
-        public static EncryptTool getInstance() {
+        private static DecryptTool tool = null;
+        private DecryptTool() {}
+        public static DecryptTool getInstance() {
             if(tool == null) {
-                tool = new EncryptTool();
+                tool = new DecryptTool();
             }
             return tool;
         }
 
-        public bool encryptFile(string fileName, string key, string outputFileName) {
+        public bool decryptFile(string fileName, string key, string outputFileName) {
             if (!File.Exists(fileName)) {
                 Console.WriteLine("Could not find: " + fileName);
                 return false;
@@ -26,21 +26,19 @@ namespace kanban.tool.encrypt {
             // read the string from file
             StreamReader streamReader = new StreamReader(fileName, Encoding.Default);
             string line;
-            StringBuilder builder = new StringBuilder();
-            while ((line = streamReader.ReadLine()) != null) {
-                builder.Append(line + "\r\n");
-            }
+            line = streamReader.ReadLine();
+            line = line.ToUpper().Trim();
             streamReader.Close();
 
-            // encypt
-            string cypher = Utils.encryptString(builder.ToString(), key);
-            if(cypher == null) {
+            // decrypt
+            string plaintext = Utils.decryptString(line, key);
+            if(plaintext == null) {
                 return false;
             }
 
             // output result
             StreamWriter streamWriter = new StreamWriter(outputFileName, false);
-            streamWriter.WriteLine(cypher);
+            streamWriter.WriteLine(plaintext);
             streamWriter.Close();
 
             return true;
