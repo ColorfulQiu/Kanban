@@ -35,7 +35,11 @@ namespace kanban.tool.encrypt {
             return builder.ToString();
         }
 
-        public void encryptFile(string fileName, string key, string outputFileName) {
+        public bool encryptFile(string fileName, string key, string outputFileName) {
+            if (!File.Exists(fileName)) {
+                Console.WriteLine("Could not find: " + fileName);
+                return false;
+            }
             // read the string from file
             StreamReader streamReader = new StreamReader(fileName, Encoding.Default);
             string line;
@@ -66,6 +70,8 @@ namespace kanban.tool.encrypt {
             StreamWriter streamWriter = new StreamWriter(outputFileName, false);
             streamWriter.WriteLine(encryptedBuilder.ToString());
             streamWriter.Close();
+
+            return true;
         }
         public static void Main() {
             EncryptTool tool = EncryptTool.getInstance();
