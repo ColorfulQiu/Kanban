@@ -59,7 +59,7 @@ namespace kanban.main.form
             StartPosition = FormStartPosition.CenterScreen;
             AutoScroll = true;
             HorizontalScroll.Visible = false;
-            Icon = new Icon("encrypt-icon.ico");
+            Icon = new Icon("board-icon.ico");
             Size = new Size(1000, 800);
 
             _labelUserInfo.Location = new Point(70, 30);
