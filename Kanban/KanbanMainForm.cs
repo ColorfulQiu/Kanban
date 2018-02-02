@@ -1,0 +1,180 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Collections.Generic;
+
+namespace kanban.main.form
+{
+   class KanbanMainForm : Form
+   {
+		protected Label _labelUserInfo;
+        protected CheckBox _checkBoxShowMineOnly;
+        protected Button _buttonShowOverdueTask;
+
+        protected List<Panel> _panelToDoList;
+        protected List<Panel> _panelInProgessList;
+        protected List<Panel> _panelDoneList;
+
+        private static readonly int FORM_WIDTH = 1000;
+        private static readonly int WIDTH_INTERVAL = 10;
+        private static readonly int BOARD_WIDTH = (FORM_WIDTH - WIDTH_INTERVAL * 4) / 3;
+        private static readonly int BOARD_HEIGHT = 80;
+        private static readonly int HEIGHT_INTERVAL = 10;
+        private static readonly Point TODO_FIRST_POSITION = new Point(WIDTH_INTERVAL, 200);
+        private static readonly Point INPROGRESS_FIRST_POSITION = new Point(BOARD_WIDTH + 2 * WIDTH_INTERVAL, 200);
+        private static readonly Point DONE_FIRST_POSITION = new Point(BOARD_WIDTH * 2 + 3 * WIDTH_INTERVAL, 200);
+
+        public KanbanMainForm()
+        {
+
+            initialComponents();
+
+            setBounds();
+
+            addComponents();
+            
+            addListeners();
+        }
+
+        private void initialComponents() {
+            _labelUserInfo = new Label();
+            _labelUserInfo.Text = "User: Neko Gong" + "\n" + "e-mail: g405252865@163.com";
+
+            _checkBoxShowMineOnly = new CheckBox();
+            _checkBoxShowMineOnly.Text = "Show my bord only";
+
+            _buttonShowOverdueTask = new Button();
+            _buttonShowOverdueTask.Text = "Show Overdue Tasks";
+
+            _panelToDoList = new List<Panel>();
+            _panelInProgessList = new List<Panel>();
+            _panelDoneList = new List<Panel>();
+        }
+
+        private void setBounds() {
+
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            StartPosition = FormStartPosition.CenterScreen;
+            Icon = new Icon("encrypt-icon.ico");
+            Size = new Size(1000, 800);
+
+            _labelUserInfo.Location = new Point(70, 30);
+            _labelUserInfo.Size = new Size(_labelUserInfo.PreferredWidth, _labelUserInfo.PreferredHeight);
+
+            _checkBoxShowMineOnly.Location = new Point(400, 30);
+            _checkBoxShowMineOnly.Size = new Size(200, 30);
+
+            _buttonShowOverdueTask.Location = new Point(680, 30);
+            _buttonShowOverdueTask.Size = new Size(180, 30);
+        }
+
+        private void addComponents() {
+            SuspendLayout();
+            this.Controls.Add(_labelUserInfo);
+            this.Controls.Add(_checkBoxShowMineOnly);
+            this.Controls.Add(_buttonShowOverdueTask);
+            ResumeLayout(false);
+        }
+
+        private void addListeners() {
+            _buttonShowOverdueTask.Click += new EventHandler(showOverdueTask);
+        }
+
+        private void removeAllBoards() {
+            for(int i = 0; i < this.Controls.Count; i++) {
+                if(this.Controls[i] is Panel) {
+                    Controls.Remove(Controls[i]);
+                    i--;
+                }
+            }
+        }
+
+        private Panel generateCommonBoard(string task, char name) {
+            Panel board = new Panel();
+            board.Size = new Size(BOARD_WIDTH, BOARD_HEIGHT);
+
+            int margin = 5;
+            int sizeOfName = BOARD_HEIGHT - 2 * margin;
+            
+            Label taskLabel = new Label();
+            taskLabel.Text = task;
+            taskLabel.Location = new Point(margin, margin);
+            taskLabel.Size = new Size(BOARD_WIDTH - 3 * margin - sizeOfName, sizeOfName);
+            taskLabel.BackColor = Color.Yellow;
+            taskLabel.TextAlign = ContentAlignment.MiddleLeft;
+            taskLabel.Font = new Font(taskLabel.Font.Name, taskLabel.Font.Size + 2, FontStyle.Regular);
+
+            Label nameLabel = new Label();
+            nameLabel.Text = "" + name;
+            nameLabel.Location = new Point(BOARD_WIDTH - margin - sizeOfName, margin);
+            nameLabel.Size = new Size(sizeOfName, sizeOfName);
+            nameLabel.BackColor = Color.Yellow;
+            nameLabel.TextAlign = ContentAlignment.MiddleCenter;
+            nameLabel.Font = new Font(nameLabel.Font.Name, nameLabel.Font.Size + 10, FontStyle.Bold);
+
+            board.Controls.Add(taskLabel);
+            board.Controls.Add(nameLabel);
+
+            return board;
+        }
+
+        private void refresh() {
+            removeAllBoards();
+            for(int i = 0; i < _panelToDoList.Count; i++) {
+                Panel panelBoard = _panelToDoList[i];
+                panelBoard.Location = new Point(TODO_FIRST_POSITION.X, TODO_FIRST_POSITION.Y + (i - 1) * (BOARD_HEIGHT + HEIGHT_INTERVAL));
+                this.Controls.Add(panelBoard);
+            }
+            for(int i = 0; i < _panelInProgessList.Count; i++) {
+                Panel panelBoard = _panelInProgessList[i];
+                panelBoard.Location = new Point(INPROGRESS_FIRST_POSITION.X, INPROGRESS_FIRST_POSITION.Y + (i - 1) * (BOARD_HEIGHT + HEIGHT_INTERVAL));
+                this.Controls.Add(panelBoard);
+            }
+            for(int i = 0; i < _panelDoneList.Count; i++) {
+                Panel panelBoard = _panelDoneList[i];
+                panelBoard.Location = new Point(DONE_FIRST_POSITION.X, DONE_FIRST_POSITION.Y + (i - 1) * (BOARD_HEIGHT + HEIGHT_INTERVAL));
+                this.Controls.Add(panelBoard);
+            }
+        }
+
+        public void generateToDoBoard(string task, char name) {
+            Panel panelBoard = generateCommonBoard(task, name);
+            panelBoard.BackColor = Color.Green;
+            _panelToDoList.Add(panelBoard);
+            refresh();
+        }
+
+        public void generateInProgressBoard(string task, char name) {
+            Panel panelBoard = generateCommonBoard(task, name);
+            panelBoard.BackColor = Color.Blue;
+            _panelInProgessList.Add(panelBoard);
+            refresh();
+        }
+
+        public void generateDoneBoard(string task, char name) {
+            Panel panelBoard = generateCommonBoard(task, name);
+            panelBoard.BackColor = Color.Red;
+            _panelDoneList.Add(panelBoard);
+            refresh();
+        }
+
+        private void showOverdueTask(object sender, EventArgs args) {
+            Console.WriteLine("refresh");
+            refresh();
+        }
+
+        public static void Main() {
+            KanbanMainForm form = new KanbanMainForm();
+            form.generateToDoBoard("1This is my first task, and I should finish the C# kanban board", 'N');
+            form.generateToDoBoard("2This is my first task, and I should finish the C# kanban board", 'N');
+
+            form.generateInProgressBoard("3This is my first task, and I should finish the C# kanban board", 'N');
+            form.generateInProgressBoard("4This is my first task, and I should finish the C# kanban board", 'N');
+
+            form.generateDoneBoard("5This is my first task, and I should finish the C# kanban board", 'N');
+            form.generateDoneBoard("6This is my first task, and I should finish the C# kanban board", 'N');
+            form.generateDoneBoard("7This is my first task, and I should finish the C# kanban board hhahahahahahahahahahahahahahahahahahahahahahaha ahahahah aaaaaaaaaaaaaaaaaaaaaaaaa", 'N');
+            Application.Run(form);
+        }
+    }
+}

@@ -38,7 +38,7 @@ namespace kanban.tool.cryptology.form
             addListeners();
         }
 
-        void initialComponents() {
+        private void initialComponents() {
             
             _labelHint = new Label();
             _labelPassword = new Label();
@@ -58,7 +58,7 @@ namespace kanban.tool.cryptology.form
             _labelPassword.Text = "input password";
         }
 
-        void setBounds() {
+        private void setBounds() {
 
             FormBorderStyle = FormBorderStyle.FixedDialog;
             StartPosition = FormStartPosition.CenterScreen;
@@ -79,7 +79,7 @@ namespace kanban.tool.cryptology.form
             _buttonRun.Size = new Size(70, 30);
         }
 
-        void addComponents() {
+        private void addComponents() {
             SuspendLayout();
             this.Controls.Add(_labelHint);
             this.Controls.Add(_labelPassword);
@@ -88,11 +88,11 @@ namespace kanban.tool.cryptology.form
             ResumeLayout(false);
         }
 
-        void addListeners() {
+        private void addListeners() {
             _buttonRun.Click += new EventHandler(buttonRunOnClick);
         }
 
-        void buttonRunOnClick(object sender, EventArgs args)
+        private void buttonRunOnClick(object sender, EventArgs args)
         {
             string password = _textBoxPassword.Text;
             Console.WriteLine(password);
