@@ -17,12 +17,14 @@ namespace kanban.main.form
 
         private static readonly int FORM_WIDTH = 1000;
         private static readonly int WIDTH_INTERVAL = 10;
-        private static readonly int BOARD_WIDTH = (FORM_WIDTH - WIDTH_INTERVAL * 4) / 3;
+        private static readonly int LEFT_MARGIN = WIDTH_INTERVAL;
+        private static readonly int RIGHT_MARGIN = 40;
+        private static readonly int BOARD_WIDTH = (FORM_WIDTH - WIDTH_INTERVAL * 2 - LEFT_MARGIN - RIGHT_MARGIN) / 3;
         private static readonly int BOARD_HEIGHT = 80;
         private static readonly int HEIGHT_INTERVAL = 10;
-        private static readonly Point TODO_FIRST_POSITION = new Point(WIDTH_INTERVAL, 200);
-        private static readonly Point INPROGRESS_FIRST_POSITION = new Point(BOARD_WIDTH + 2 * WIDTH_INTERVAL, 200);
-        private static readonly Point DONE_FIRST_POSITION = new Point(BOARD_WIDTH * 2 + 3 * WIDTH_INTERVAL, 200);
+        private static readonly Point TODO_FIRST_POSITION = new Point(LEFT_MARGIN, 200);
+        private static readonly Point INPROGRESS_FIRST_POSITION = new Point(BOARD_WIDTH + LEFT_MARGIN + WIDTH_INTERVAL, 200);
+        private static readonly Point DONE_FIRST_POSITION = new Point(BOARD_WIDTH * 2 + LEFT_MARGIN + WIDTH_INTERVAL * 2, 200);
 
         public KanbanMainForm()
         {
@@ -55,6 +57,8 @@ namespace kanban.main.form
 
             FormBorderStyle = FormBorderStyle.FixedDialog;
             StartPosition = FormStartPosition.CenterScreen;
+            AutoScroll = true;
+            HorizontalScroll.Visible = false;
             Icon = new Icon("encrypt-icon.ico");
             Size = new Size(1000, 800);
 
@@ -159,8 +163,7 @@ namespace kanban.main.form
         }
 
         private void showOverdueTask(object sender, EventArgs args) {
-            Console.WriteLine("refresh");
-            refresh();
+            this.generateToDoBoard("1This is my first task, and I should finish the C# kanban board", 'N');
         }
 
         public static void Main() {
