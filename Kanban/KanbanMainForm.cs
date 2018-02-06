@@ -71,7 +71,6 @@ namespace kanban.main.form
             FormBorderStyle = FormBorderStyle.FixedDialog;
             StartPosition = FormStartPosition.CenterScreen;
             AutoScroll = true;
-            HorizontalScroll.Visible = false;
             Icon = new Icon("board-icon.ico");
             Size = new Size(1000, 800);
 
