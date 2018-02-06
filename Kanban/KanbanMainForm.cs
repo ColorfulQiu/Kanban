@@ -15,6 +15,7 @@ namespace kanban.main.form
 		protected Label _labelUserInfo;
         protected CheckBox _checkBoxShowMineOnly;
         protected Button _buttonShowOverdueTask;
+        protected Button _buttonCreateNewTask;
 
         protected List<Panel> _panelToDoList;
         protected List<Panel> _panelInProgessList;
@@ -55,7 +56,10 @@ namespace kanban.main.form
             _checkBoxShowMineOnly.Text = "Show my bord only";
 
             _buttonShowOverdueTask = new Button();
-            _buttonShowOverdueTask.Text = "Show Overdue Tasks";
+            _buttonShowOverdueTask.Text = "Show overdue tasks";
+
+            _buttonCreateNewTask = new Button();
+            _buttonCreateNewTask.Text = "Create new task";
 
             _panelToDoList = new List<Panel>();
             _panelInProgessList = new List<Panel>();
@@ -75,10 +79,13 @@ namespace kanban.main.form
             _labelUserInfo.Size = new Size(_labelUserInfo.PreferredWidth, _labelUserInfo.PreferredHeight);
 
             _checkBoxShowMineOnly.Location = new Point(400, 30);
-            _checkBoxShowMineOnly.Size = new Size(200, 30);
+            _checkBoxShowMineOnly.Size = new Size(150, 30);
 
-            _buttonShowOverdueTask.Location = new Point(680, 30);
-            _buttonShowOverdueTask.Size = new Size(180, 30);
+            _buttonCreateNewTask.Location = new Point(650, 30);
+            _buttonCreateNewTask.Size = new Size(120, 30);
+
+            _buttonShowOverdueTask.Location = new Point(780, 30);
+            _buttonShowOverdueTask.Size = new Size(120, 30);
         }
 
         private void addComponents() {
@@ -86,6 +93,7 @@ namespace kanban.main.form
             this.Controls.Add(_labelUserInfo);
             this.Controls.Add(_checkBoxShowMineOnly);
             this.Controls.Add(_buttonShowOverdueTask);
+            this.Controls.Add(_buttonCreateNewTask);
             ResumeLayout(false);
         }
 
