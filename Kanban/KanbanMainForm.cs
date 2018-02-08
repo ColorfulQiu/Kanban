@@ -3,6 +3,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
 
+using kanban.main.utils;
+
 namespace kanban.main.form
 {
     public class PanelTag {
@@ -73,6 +75,8 @@ namespace kanban.main.form
             AutoScroll = true;
             Icon = new Icon("board-icon.ico");
             Size = new Size(1000, 800);
+            Text = "Kanban";
+            BackColor = Color.FromKnownColor(KnownColor.AliceBlue);
 
             _labelUserInfo.Location = new Point(70, 30);
             _labelUserInfo.Size = new Size(_labelUserInfo.PreferredWidth, _labelUserInfo.PreferredHeight);
@@ -112,6 +116,7 @@ namespace kanban.main.form
         private Panel generateCommonBoard(string task, char name) {
             Panel board = new Panel();
             board.Size = new Size(BOARD_WIDTH, BOARD_HEIGHT);
+            board.BackColor = Utils.getLightColorFromString(name + "|color");
 
             int margin = 5;
             int sizeOfName = BOARD_HEIGHT - 2 * margin;
@@ -120,7 +125,7 @@ namespace kanban.main.form
             taskLabel.Text = task;
             taskLabel.Location = new Point(margin, margin);
             taskLabel.Size = new Size(BOARD_WIDTH - 3 * margin - sizeOfName, sizeOfName);
-            taskLabel.BackColor = Color.Yellow;
+            taskLabel.BackColor = Utils.getLightColorFromString(name + "|color");
             taskLabel.TextAlign = ContentAlignment.MiddleLeft;
             taskLabel.Font = new Font(taskLabel.Font.Name, taskLabel.Font.Size + 2, FontStyle.Regular);
 
@@ -128,7 +133,7 @@ namespace kanban.main.form
             nameLabel.Text = "" + name;
             nameLabel.Location = new Point(BOARD_WIDTH - margin - sizeOfName, margin);
             nameLabel.Size = new Size(sizeOfName, sizeOfName);
-            nameLabel.BackColor = Color.Yellow;
+            nameLabel.BackColor = Utils.getLightColorFromString(name + "|color");
             nameLabel.TextAlign = ContentAlignment.MiddleCenter;
             nameLabel.Font = new Font(nameLabel.Font.Name, nameLabel.Font.Size + 10, FontStyle.Bold);
 
@@ -170,7 +175,7 @@ namespace kanban.main.form
         public void generateToDoBoard(string task, char name) {
             Panel panelBoard = generateCommonBoard(task, name);
             panelBoard.Tag = new PanelTag () { column = 0, row = _panelToDoList.Count };
-            panelBoard.BackColor = Color.Green;
+ //           panelBoard.BackColor = Color.FromKnownColor(KnownColor.BlanchedAlmond);
             _panelToDoList.Add(panelBoard);
             refresh();
         }
@@ -178,7 +183,7 @@ namespace kanban.main.form
         public void generateInProgressBoard(string task, char name) {
             Panel panelBoard = generateCommonBoard(task, name);
             panelBoard.Tag = new PanelTag () { column = 1, row = _panelInProgessList.Count };
-            panelBoard.BackColor = Color.Blue;
+//            panelBoard.BackColor = Color.FromKnownColor(KnownColor.MediumAquamarine);
             _panelInProgessList.Add(panelBoard);
             refresh();
         }
@@ -186,7 +191,7 @@ namespace kanban.main.form
         public void generateDoneBoard(string task, char name) {
             Panel panelBoard = generateCommonBoard(task, name);
             panelBoard.Tag = new PanelTag () { column = 2, row = _panelDoneList.Count };
-            panelBoard.BackColor = Color.Red;
+ //           panelBoard.BackColor = Color.FromKnownColor(KnownColor.PaleVioletRed);
             _panelDoneList.Add(panelBoard);
             refresh();
         }
@@ -275,13 +280,13 @@ namespace kanban.main.form
         public static void Main() {
             KanbanMainForm form = new KanbanMainForm();
             form.generateToDoBoard("1This is my first task, and I should finish the C# kanban board", 'N');
-            form.generateToDoBoard("2This is my first task, and I should finish the C# kanban board", 'N');
+            form.generateToDoBoard("2This is my first task, and I should finish the C# kanban board", 'S');
 
             form.generateInProgressBoard("3This is my first task, and I should finish the C# kanban board", 'N');
-            form.generateInProgressBoard("4This is my first task, and I should finish the C# kanban board", 'N');
+            form.generateInProgressBoard("4This is my first task, and I should finish the C# kanban board", 'L');
 
-            form.generateDoneBoard("5This is my first task, and I should finish the C# kanban board", 'N');
-            form.generateDoneBoard("6This is my first task, and I should finish the C# kanban board", 'N');
+            form.generateDoneBoard("5This is my first task, and I should finish the C# kanban board", 'S');
+            form.generateDoneBoard("6This is my first task, and I should finish the C# kanban board", 'P');
             form.generateDoneBoard("7This is my first task, and I should finish the C# kanban board hhahahahahahahahahahahahahahahahahahahahahahaha ahahahah aaaaaaaaaaaaaaaaaaaaaaaaa", 'N');
             Application.Run(form);
         }

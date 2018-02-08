@@ -10,8 +10,8 @@ for /f %%i in ('dir C:\Windows\Microsoft.NET\Framework\csc.exe /b /s') do (
 if "%compile-tool%"=="" goto end
 %compile-tool% /target:winexe /out:encrypt-form.exe /win32icon:encrypt-icon.ico DecryptTool\Utils.cs DecryptTool\EncryptTool.cs DecryptTool\DecryptTool.cs DecryptTool\CryptologyForm.cs DecryptTool\StartEncryptForm.cs
 %compile-tool% /target:winexe /out:decrypt-form.exe /win32icon:encrypt-icon.ico DecryptTool\Utils.cs DecryptTool\EncryptTool.cs DecryptTool\DecryptTool.cs DecryptTool\CryptologyForm.cs DecryptTool\StartDecryptForm.cs
-%compile-tool%  /out:kanban-form.exe /win32icon:board-icon.ico Kanban\KanbanMainForm.cs
-%compile-tool%  /out:task-form.exe /win32icon:board-icon.ico Kanban\TaskForm.cs
+%compile-tool%  /out:kanban-form.exe /win32icon:board-icon.ico Kanban\KanbanMainForm.cs Kanban\Utils.cs
+%compile-tool%  /out:task-form.exe /win32icon:board-icon.ico Kanban\TaskForm.cs Kanban\Utils.cs
 goto end
 
 :clean
